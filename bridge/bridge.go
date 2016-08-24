@@ -369,5 +369,7 @@ var Hostname string
 func init() {
 	// It's ok for Hostname to ultimately be an empty string
 	// An empty string will fall back to trying to make a best guess
-	Hostname, _ = os.Hostname()
+	if Hostname := os.Getenv("DOCKER_HOSTNAME"); Hostname == "" {
+		Hostname, _ = os.Hostname()
+	}
 }
