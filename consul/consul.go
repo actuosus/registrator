@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 	"os"
-	"github.com/gliderlabs/registrator/bridge"
+	"github.com/actuosus/registrator/bridge"
 	consulapi "github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-cleanhttp"
 )
@@ -15,9 +15,9 @@ const DefaultInterval = "10s"
 
 func init() {
 	f := new(Factory)
-	bridge.Register(f, "consul")
-	bridge.Register(f, "consul-tls")
-	bridge.Register(f, "consul-unix")
+	bridge.RegisterExtension(f, "consul")
+	bridge.RegisterExtension(f, "consul-tls")
+	bridge.RegisterExtension(f, "consul-unix")
 }
 
 func (r *ConsulAdapter) interpolateService(script string, service *bridge.Service) string {

@@ -7,11 +7,11 @@ import (
 	"strings"
 
 	"github.com/coreos/go-etcd/etcd"
-	"github.com/gliderlabs/registrator/bridge"
+	"github.com/actuosus/registrator/bridge"
 )
 
 func init() {
-	bridge.Register(new(Factory), "skydns2")
+	bridge.RegisterExtension(new(Factory), "skydns2")
 }
 
 type Factory struct{}

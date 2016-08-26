@@ -11,7 +11,7 @@ import (
 
 	dockerapi "github.com/fsouza/go-dockerclient"
 	"github.com/gliderlabs/pkg/usage"
-	"github.com/gliderlabs/registrator/bridge"
+	"github.com/actuosus/registrator/bridge"
 )
 
 var Version string
@@ -48,6 +48,7 @@ func main() {
 		os.Exit(0)
 	}
 	log.Printf("Starting registrator %s ...", Version)
+	fmt.Printf("# adapters: %s\n", strings.Join(bridge.AdapterFactories.Names(), " "))
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])

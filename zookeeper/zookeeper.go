@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gliderlabs/registrator/bridge"
+	"github.com/actuosus/registrator/bridge"
 	"github.com/samuel/go-zookeeper/zk"
 )
 
 func init() {
-	bridge.Register(new(Factory), "zookeeper")
+	bridge.RegisterExtension(new(Factory), "zookeeper")
 }
 
 type Factory struct{}

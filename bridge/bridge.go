@@ -31,12 +31,20 @@ func New(docker *dockerapi.Client, adapterUri string, config Config) (*Bridge, e
 	if err != nil {
 		return nil, errors.New("bad adapter uri: " + adapterUri)
 	}
-	factory, found := AdapterFactories.Lookup(uri.Scheme)
-	if !found {
+	factory := AdapterFactories.Lookup(uri.Scheme)
+	if factory == nil {
 		return nil, errors.New("unrecognized adapter: " + adapterUri)
 	}
 
 	log.Println("Using", uri.Scheme, "adapter:", uri)
+
+	query := uri.Query()
+	if filterLabel, ok := query["filter.label"]; ok {
+		if len(filterLabel) > 0 {
+			config.FilterLabel = filterLabel[0]
+		}
+	}
+
 	return &Bridge{
 		docker:         docker,
 		config:         config,
@@ -91,7 +99,15 @@ func (b *Bridge) Sync(quiet bool) {
 	b.Lock()
 	defer b.Unlock()
 
-	containers, err := b.docker.ListContainers(dockerapi.ListContainersOptions{})
+	listContainersOptions := dockerapi.ListContainersOptions{}
+
+	if b.config.FilterLabel != "" {
+		log.Printf("Will use label filter %s to containers list", b.config.FilterLabel)
+		filters := map[string][]string{"label": []string{b.config.FilterLabel}}
+		listContainersOptions = dockerapi.ListContainersOptions{Filters: filters}
+	}
+
+	containers, err := b.docker.ListContainers(listContainersOptions)
 	if err != nil && quiet {
 		log.Println("error listing containers, skipping sync")
 		return

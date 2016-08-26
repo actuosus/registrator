@@ -7,14 +7,14 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gliderlabs/registrator/bridge"
+	"github.com/actuosus/registrator/bridge"
 	consulapi "github.com/hashicorp/consul/api"
 )
 
 func init() {
 	f := new(Factory)
-	bridge.Register(f, "consulkv")
-	bridge.Register(f, "consulkv-unix")
+	bridge.RegisterExtension(f, "consulkv")
+	bridge.RegisterExtension(f, "consulkv-unix")
 }
 
 type Factory struct{}
