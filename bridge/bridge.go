@@ -214,6 +214,17 @@ func (b *Bridge) add(containerId string, quiet bool) {
 		return
 	}
 
+	// Check if the filter applies to the container
+	if b.config.FilterLabel != "" {
+		if filterLabel := strings.Split(b.config.FilterLabel, "="); len(filterLabel) > 0 {
+			if labelValue, ok := container.Config.Labels[filterLabel[0]]; ok {
+				if labelValue != filterLabel[1] {
+					return
+				}
+			}
+		}
+	}
+
 	ports := make(map[string]ServicePort)
 
 	// Extract configured host port mappings, relevant when using --net=host
