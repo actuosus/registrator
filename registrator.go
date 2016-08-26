@@ -48,7 +48,7 @@ func main() {
 		os.Exit(0)
 	}
 	log.Printf("Starting registrator %s ...", Version)
-	fmt.Printf("# adapters: %s\n", strings.Join(bridge.AdapterFactories.Names(), " "))
+	log.Printf("# adapters: %s\n", strings.Join(bridge.AdapterFactories.Names(), " "))
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
